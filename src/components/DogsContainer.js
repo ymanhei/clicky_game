@@ -31,6 +31,7 @@ class DogsContainer extends Component {
     current_score: 0,
     top_score: 0,
     message:"Click a dog!",
+    msg_color: "text-white",
     array:array
   };
 
@@ -86,9 +87,10 @@ class DogsContainer extends Component {
     console.log(this.state.array);
     console.log("Current click id:  "+id);
     console.log("Found:  "+found);
-    if (found > 0) {
+    if (found !== -1) {
       this.setState({
         message: "Sorry it's wrong! Please try again!",
+        msg_color:"text-danger",
         current_score: 0,
         array: []
       });
@@ -96,18 +98,27 @@ class DogsContainer extends Component {
       this.shuffledogs();
     }
     else {
+      
       this.state.array.push(id); 
       var new_score = this.state.current_score + 1;
-      this.setState({
-        current_score: new_score,
-        message:"Correct! Keep clicking!",
-      });
-      if (this.state.current_score > this.state.top_score){
+
+      if (new_score > this.state.top_score){
         this.setState({
+          current_score: new_score,
+          message:"Correct! Keep clicking!",
+          msg_color:"text-white",
           top_score: new_score
         });
-
       }
+      else {
+        this.setState({
+          current_score: new_score,
+          message:"Correct! Keep clicking!",
+          msg_color:"text-white"
+        });
+      }
+      
+      
       this.shuffledogs();
     }
     
@@ -121,6 +132,7 @@ class DogsContainer extends Component {
       message = {this.state.message}
       current_score = {this.state.current_score}
       top_score = {this.state.top_score}
+      msg_color = {this.state.msg_color}
       />
       <Header />
       <Container>
@@ -129,7 +141,7 @@ class DogsContainer extends Component {
           <Col size="md-12">
             {this.state.result.map(r => (
               <Dogs
-                title={r.Title || "Ops! Please search again!"}
+                //title={r.Title || "Ops! Please search again!"}
                 src={r.src}
                 id={r.id}
                 onClick={this.update_score}
