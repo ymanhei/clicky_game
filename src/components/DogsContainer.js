@@ -22,12 +22,16 @@ const dogs = [
   { Title: "l", id: 12, src: './assets/images/l.png'}
 ];
 
-class OmdbContainer extends Component {
+var array = [];
+
+class DogsContainer extends Component {
+  
   state = {
     result: dogs,
     current_score: 0,
     top_score: 0,
-    message:"Click a dog!"
+    message:"Click a dog!",
+    array:array
   };
 
 /*   searchMovies = query => {
@@ -75,9 +79,39 @@ class OmdbContainer extends Component {
   };
 
   // When the form is submitted, search the OMDB API for the value of `this.state.search`
-  handleFormSubmit = event => {
+  update_score = event => {
     event.preventDefault();
-    this.shuffledogs();
+    const id = event.target.id;
+    let found = this.state.array.indexOf(id);
+    console.log(this.state.array);
+    console.log("Current click id:  "+id);
+    console.log("Found:  "+found);
+    if (found > 0) {
+      this.setState({
+        message: "Sorry it's wrong! Please try again!",
+        current_score: 0,
+        array: []
+      });
+
+      this.shuffledogs();
+    }
+    else {
+      this.state.array.push(id); 
+      var new_score = this.state.current_score + 1;
+      this.setState({
+        current_score: new_score,
+        message:"Correct! Keep clicking!",
+      });
+      if (this.state.current_score > this.state.top_score){
+        this.setState({
+          top_score: new_score
+        });
+
+      }
+      this.shuffledogs();
+    }
+    
+    
   };
 
   render() {
@@ -97,7 +131,8 @@ class OmdbContainer extends Component {
               <Dogs
                 title={r.Title || "Ops! Please search again!"}
                 src={r.src}
-                onClick={this.handleFormSubmit}
+                id={r.id}
+                onClick={this.update_score}
               />
             ))}
           </Col>
@@ -110,4 +145,4 @@ class OmdbContainer extends Component {
   }
 }
 
-export default OmdbContainer;
+export default DogsContainer;

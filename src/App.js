@@ -1,8 +1,8 @@
 import React from "react";
-import OmdbContainer from "./components/OmdbContainer";
+import DogsContainer from "./components/DogsContainer";
 
 function App() {
-  return <OmdbContainer />;
+  return <DogsContainer />;
 }
 
 export default App;
